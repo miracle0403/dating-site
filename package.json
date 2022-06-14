@@ -6,11 +6,26 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
+    "dotenv": "^16.0.1",
     "express": "~4.16.1",
+    "express-flash-messages": "^0.1.1",
+    "express-myconnection": "^1.0.4",
+    "express-mysql-session": "^2.1.8",
+    "express-session": "^1.17.3",
+    "express-validator": "^6.14.1",
     "hbs": "~4.0.4",
+    "helmet": "^5.1.0",
     "http-errors": "~1.6.3",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "mysql": "^2.18.1",
+    "mysql-connection-pool-manager": "^1.5.9",
+    "nodemailer": "^6.7.5",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
+    "secure-pin": "^1.0.14"
   }
 }
