@@ -32,6 +32,12 @@ router.get('/register', function(req, res, next) {
 });
 
 
+/* GET room */
+router.get('/room', function(req, res, next) {
+  res.render('room', { title: 'Meldoo', subtitle: 'Interracial dating app' });
+});
+
+
 
 /* GET login */
 router.get('/login', function(req, res, next) {
@@ -48,6 +54,65 @@ router.get('/login', function(req, res, next) {
 	}
 });
 
+//get profile
+router.get('/profile', authentificationMiddleware(), function(req, res, next) {
+	var currentUser = req.session.passport.user.user_id;
+	db.query('SELECT * FROM user WHERE user_id = ? ', [currentUser], function(err, results, fields){
+		if (err) throw err;
+		var profile = results[0];
+		if(profile.user_type == 'Administrator'){
+			//take to admin dashboard
+		}else{
+			//to user dashboard
+			const flashMessages = res.locals.getMessages( );
+			if( flashMessages.error ){
+				res.render( 'profile', {
+					showErrors: true,
+					bio: profile,
+					title: 'Meldoo', 
+					subtitle: 'Interracial dating app',
+					errors: flashMessages.error
+				});
+			}else if(flashMessages.error ){
+				res.render( 'profile', {
+					showSuccess: true,
+					bio: profile,
+					title: 'Meldoo', 
+					subtitle: 'Interracial dating app',
+					success: flashMessages.success
+				});
+			}else{
+				res.render('profile', { title: 'Meldoo', 
+					subtitle: 'Interracial dating app', 
+					bio: profile  
+				});
+			}
+			
+		}
+	});	
+});		
+
+
+/* GET dashboard */
+router.get('/dashboard', authentificationMiddleware(), function(req, res, next) {
+	var currentUser = req.session.passport.user.user_id;
+	db.query('SELECT * FROM user WHERE user_id = ?', [currentUser], function ( err, results, fields ){
+		if( err ) throw err;
+		var users = results[0];
+		if(users.profile == 'No'){
+			var error = 'Please update your profile';
+			req.flash('error', error);
+			res.redirect('/profile');
+		}else{
+			if(users.user_type == 'Administrator'){
+				//take to the admin dashboard
+			}else{
+				//start with the user dashboard
+				
+			}
+		}
+	});	
+});
 
 //get logout
 router.get('/logout', function(req, res, next) {
