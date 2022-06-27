@@ -62,21 +62,25 @@ router.get('/profile', authentificationMiddleware(), function(req, res, next) {
 		var profile = results[0];
 		if(profile.user_type == 'Administrator'){
 			//take to admin dashboard
-		}else{
+		}else if (profile.user_type == 'user' && profile.profile == 'No'){
 			//to user dashboard
+			var error1 = 'You have not yet updated your profile. ';
 			const flashMessages = res.locals.getMessages( );
+			console.log(flashMessages)
 			if( flashMessages.error ){
 				res.render( 'profile', {
 					showErrors: true,
 					bio: profile,
+					error1: error1, 
 					title: 'Meldoo', 
 					subtitle: 'Interracial dating app',
-					errors: flashMessages.error
+					error: flashMessages.error
 				});
 			}else if(flashMessages.error ){
 				res.render( 'profile', {
 					showSuccess: true,
 					bio: profile,
+					error1: error1, 
 					title: 'Meldoo', 
 					subtitle: 'Interracial dating app',
 					success: flashMessages.success
@@ -84,6 +88,7 @@ router.get('/profile', authentificationMiddleware(), function(req, res, next) {
 			}else{
 				res.render('profile', { title: 'Meldoo', 
 					subtitle: 'Interracial dating app', 
+					error1: error1, 
 					bio: profile  
 				});
 			}
